@@ -2408,6 +2408,7 @@ int GUIAction::repack(std::string arg __unused)
 int GUIAction::flashlight(std::string arg __unused)
 {
 	int br_value = DataManager::GetIntValue("pb_bright_value");
+	if (br_value <= 0) br_value = 500;
 	string str_val, file, flashp1 = "/sys/class/leds", flashp2 = "/flashlight", flashpath;
 	string bright = "/brightness";
 	string switch_path = TWFunc::Path_Exists(flashp1 + "/led:switch" + bright) ? (flashp1 + "/led:switch") : (flashp1 + "/led:switch_0");
@@ -2441,7 +2442,7 @@ int GUIAction::flashlight(std::string arg __unused)
 		while ((de = readdir(d)) != NULL)
 		{
 			file = de->d_name;
-			if(file.find("torch") != string::npos || file.find("torch_"))
+			if(file.find("torch") != string::npos || file.find("torch_") != string::npos)
 			{
 				flashpath = flashp1 + "/" + file + bright;
 				break;
